@@ -3,7 +3,7 @@ import numpy as np
 import os
 
 #corresponding person
-subjects = ["Arnold","Mark"]
+subjects = ["Will","Mark"]
 
 
 #function to detect face using OpenCV
@@ -80,7 +80,7 @@ def prepare_training_data(data_folder_path):
             
             #display an image window to show the image 
             cv2.imshow("Training on image...", image)
-            cv2.waitKey(100)
+            #cv2.waitKey(100)
             
             #detect face
             face, rect = detect_face(image)
@@ -150,6 +150,8 @@ def predict(test_img):
     #get name of respective label returned by face recognizer
     label_text = subjects[label[0]]
     
+    print("Accuracy:"+str(label[1]))
+
     #draw a rectangle around face detected
     draw_rectangle(img, rect)
     #draw name of predicted person
@@ -160,7 +162,7 @@ def predict(test_img):
 print("Predicting images...")
 
 #load test images
-test_img = cv2.imread("sample_data/2.jpeg")
+test_img = cv2.imread("sample_data/3.jpg")
 
 #perform a prediction
 predicted_img = predict(test_img)
@@ -168,6 +170,6 @@ print("Prediction complete")
 
 #display both images
 cv2.imshow("Face Prediction", predicted_img)
-cv2.waitKey(0)
+cv2.waitKey(5000)
 cv2.destroyAllWindows()
 
