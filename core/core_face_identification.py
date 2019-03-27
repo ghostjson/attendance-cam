@@ -1,9 +1,8 @@
 import cv2
 import numpy as np
 import os
+import pickle
 
-#subjects
-subjects = ["Will","Mark"]
 
 #face_identification class
 class FaceIdentification:
@@ -91,14 +90,16 @@ class FaceIdentification:
                     faces.append(face)
                     #add label for this face
                     labels.append(label)
-                    print(image_name+" read sucessfully!!")
+                    #print(image_name+" read sucessfully!!")
                 else:
                     print(image_name+" can't detect face!")
             
         cv2.destroyAllWindows()
         cv2.waitKey(1)
         cv2.destroyAllWindows()
-            
+        
+        
+
         return faces, labels
 
     def fetch_data(self):
@@ -118,6 +119,8 @@ class FaceIdentification:
         #training algorithm
         self.face_recognizer.train(self.faces, np.array(self.labels))
 
+        
+
     #function to draw rectangle on image 
     def draw_rectangle(self,img, rect):
         (self.x, self.y, self.w, self.h) = rect
@@ -131,7 +134,10 @@ class FaceIdentification:
     #predict the image of the given person
     def predict(self,test_img):
 
-        img = test_img.copy()
+
+        print("Predicting images...")
+        #load test images
+        img = test_img = cv2.imread(test_img)
 
         #detect face from the image
         face, rect = self.detect_face(img)
@@ -149,25 +155,17 @@ class FaceIdentification:
         #draw name of predicted person
         self.draw_text(img, label_text, rect[0], rect[1]-5)
         
+        print("Prediction complete")
         return img
+        
+    def predictimg(self,img):
+        #perform a prediction
+        predicted_img = self.predict(img)
 
 
-fi = FaceIdentification(subjects)
-fi.fetch_data()
-fi.trainData()
+        #display both images
+        cv2.imshow("Face Prediction", predicted_img)
+        cv2.waitKey(5000)
+        cv2.destroyAllWindows()
 
-
-print("Predicting images...")
-
-#load test images
-test_img = cv2.imread("test_data/3.jpg")
-
-#perform a prediction
-predicted_img = fi.predict(test_img)
-print("Prediction complete")
-
-#display both images
-cv2.imshow("Face Prediction", predicted_img)
-cv2.waitKey(5000)
-cv2.destroyAllWindows()
 
