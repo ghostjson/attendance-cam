@@ -94,6 +94,9 @@ class FaceIdentification:
                     #print(image_name+" read sucessfully!!")
                 else:
                     print(image_name+" can't detect face!")
+                    
+                    #remove img which face can't be detected
+                    os.remove("training_data/p"+str(label)+"/"+image_name)
             
         cv2.destroyAllWindows()
         cv2.waitKey(1)
