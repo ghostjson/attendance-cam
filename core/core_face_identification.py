@@ -1,3 +1,4 @@
+
 import cv2
 import numpy as np
 import os
@@ -108,18 +109,39 @@ class FaceIdentification:
         self.faces, self.labels = self.prepare_training_data("training_data")
         print("Data prepared")
 
+
+        #saving data################
+        print("Saving Fetched Data")
+        with open('data/faces.dat', 'wb') as f:
+            pickle.dump(self.faces, f)
+        with open('data/labels.dat', 'wb') as f:
+            pickle.dump(self.labels, f)
+        print("Save Completed")
+
+        #####################
+
         #print total faces and labels
         print("Total faces: ", len(self.faces))
         print("Total labels: ", len(self.labels))
 
     def trainData(self):
+        
+        #load data of faces and labels
+        print("Fetching Data")
+        with open('data/faces.dat', 'rb') as f:
+            self.faces = pickle.load(f)
+        with open('data/labels.dat', 'rb') as f:
+            self.labels = pickle.load(f)
+        print("Fetch Completed")
+        ################
+
+
         #face recogizing algorithm 
         self.face_recognizer = cv2.face.LBPHFaceRecognizer_create()
 
         #training algorithm
         self.face_recognizer.train(self.faces, np.array(self.labels))
 
-        
 
     #function to draw rectangle on image 
     def draw_rectangle(self,img, rect):
@@ -157,13 +179,17 @@ class FaceIdentification:
         
         print("Prediction complete")
         return img
-        
+
+    #predict image from trained data 
     def predictimg(self,img):
+
+        self.trainData()
+
         #perform a prediction
         predicted_img = self.predict(img)
 
 
-        #display both images
+            #display both images
         cv2.imshow("Face Prediction", predicted_img)
         cv2.waitKey(5000)
         cv2.destroyAllWindows()
