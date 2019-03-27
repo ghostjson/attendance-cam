@@ -12,7 +12,8 @@ class FaceIdentification:
         self.subjects = subjects
 
     #function to detect face using OpenCV
-    def detect_face(self,img):
+    @staticmethod
+    def detect_face(img):
         #convert the test image to gray scale
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         
@@ -94,7 +95,7 @@ class FaceIdentification:
                     #print(image_name+" read sucessfully!!")
                 else:
                     print(image_name+" can't detect face!")
-                    
+
                     #remove img which face can't be detected
                     os.remove("training_data/p"+str(label)+"/"+image_name)
             
@@ -146,7 +147,8 @@ class FaceIdentification:
         self.face_recognizer.train(self.faces, np.array(self.labels))
 
 
-    #function to draw rectangle on image 
+    #function to draw rectangle on image
+    
     def draw_rectangle(self,img, rect):
         (self.x, self.y, self.w, self.h) = rect
         cv2.rectangle(img, (self.x, self.y), (self.x+self.w, self.y+self.h), (0, 255, 0), 2)
@@ -172,8 +174,6 @@ class FaceIdentification:
         
         #get name of respective label returned by face recognizer
         label_text = self.subjects[label[0]]
-        
-        print("Accuracy:"+str(label[1]))
 
         #draw a rectangle around face detected
         self.draw_rectangle(img, rect)
