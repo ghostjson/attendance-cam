@@ -4,7 +4,7 @@ from core.core_face_identification import FaceIdentification
 #get sample frames from webcame to predict
 def stream():
     
-    count = 0
+    #count = 0
     #get cam video object
     cap = cv2.VideoCapture(0)
 
@@ -23,13 +23,14 @@ def stream():
 
             
             #save photos
-            if count % 5 == 0:
-                name = "img/frame%d.jpg"%count
-                cv2.imwrite(name,frame)
-            count += 1
+        #    if count % 5 == 0:
+            name = "img/frame0.jpg"
+            cv2.imwrite(name,frame)
+        #    count += 1
 
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
             cv2.imshow('Video',frame) #show each frame
+            break
 
         except:
             cv2.imshow('Video',frame) #show each frame
@@ -37,11 +38,12 @@ def stream():
         #break when esc key is pressed
         k = cv2.waitKey(1)
         if k == 27:
+            return False
             break
 
-        if count > 15:
-        	break
-
+        #if count > 15:
+        #	break
+        #break
     cv2.destroyAllWindows()
     cap.release() #release all resources
 

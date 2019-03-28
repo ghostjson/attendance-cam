@@ -1,0 +1,36 @@
+
+FOR PRECISE PREDICTION , CHECK PHOTO FOUR TIMES BUT SLOW
+while True:
+    #get sample frames from webcame to predict
+    video.stream()
+
+    #predict the given image
+    prediction = []
+    try:
+        for i in range(0,16, 5):
+            prediction.append(fi.predictimg("img/frame%d"%i + ".jpg"))
+
+        
+        print(max(set(prediction), key=prediction.count))
+    except:
+        continue
+    if input() == 'a':
+        exit()
+
+
+#LIB 2
+while True:
+    try:
+        video.stream()
+        prediction = fi.predictimg("img/frame0.jpg")
+
+        print(prediction)
+
+    finally:
+     #end
+        if input() == 'e':
+            try:
+                os.remove("img/frame0.jpg")
+            except FileNotFoundError:
+                raise Exception('frame0 is not found!')
+            break

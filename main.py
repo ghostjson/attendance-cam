@@ -2,10 +2,9 @@ from core.core_face_identification import FaceIdentification
 import cv2
 from core import video
 import json
+import os
 
-#subjects
-# subjects = ["Will","Mark","Jobs","Me"]
-# subjects = json.dumps(subjects, indent=4)
+
 
 # with open('data/subjects.json', 'w') as s:
 #     s.write(subjects)
@@ -16,22 +15,62 @@ fi = FaceIdentification()
 #fetch_data
 #fi.fetch_data()
 
-#get sample frames from webcame to predict
-video.stream()
-
 #Add a new person
-#video.addFace("Me")
-
-#FaceIdentification.addPerson("hello")
-
-#predict the given image
-prediction = []
-for i in range(0,16, 5):
-    prediction.append(fi.predictimg("img/frame%d"%i + ".jpg"))
+#video.addFace("Sachin")
 
 
-#print(fi.predictimg('img/frame0.jpg'))
-print(max(set(prediction), key=prediction.count))
 
 
+attendance = []
+#console
+
+entry = 'd'
+while(entry != 'e'):
+    print("Enter 'a' for add a new person:")
+    print("Enter 's' for start taking attendance:")
+    print("Enter 'e' for end taking attendance:")
+
+    entry = input()
+
+    if entry == 'a':
+        while True:
+            print("Enter person's name:")
+            name = input()
+            video.addFace(name)
+            print("Want to add more person?[y/n]")
+            if input() != 'y':
+                break
+        fi.fetch_data()
+
+        
+    elif entry == 's':
+        while True:
+            try:
+                video.stream()
+                prediction = fi.predictimg("img/frame0.jpg")
+
+                attendance.append(prediction)
+
+            finally:
+            #end
+                if input() == 'e':
+                    entry = 'e'
+                    try:
+                        os.remove("img/frame0.jpg")
+                        break
+                    except FileNotFoundError:
+                        raise Exception('frame0 is not found!')
+                        break
+    elif entry == 'e':
+        break
+    else:
+        print("Invalid input try again")
+
+
+print("\n\n")
+
+
+print("Present:")
+for i in attendance:
+    print(i)
 

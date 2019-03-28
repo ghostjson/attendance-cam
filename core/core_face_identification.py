@@ -84,8 +84,8 @@ class FaceIdentification:
                 image = cv2.imread(image_path)
                 
                 #display an image window to show the image 
-                cv2.imshow("Training on image...", image)
-                cv2.waitKey(100)
+                #cv2.imshow("Training on image...", image)
+                #cv2.waitKey(100)
                 
                 #detect face
                 face, rect = self.detect_face(image)
