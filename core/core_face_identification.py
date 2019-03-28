@@ -3,12 +3,17 @@ import cv2
 import numpy as np
 import os
 import pickle
-
+import json
 
 #face_identification class
 class FaceIdentification:
     
-    def __init__(self,subjects):
+    def __init__(self):
+
+        #get subjects
+        with open("data/subjects.json", 'r') as f:
+                subjects = f.read()
+        subjects = json.loads(subjects)
         self.subjects = subjects
 
     #function to detect face using OpenCV
@@ -181,7 +186,7 @@ class FaceIdentification:
         self.draw_text(img, label_text, rect[0], rect[1]-5)
         
         print("Prediction complete")
-        return img
+        return label_text,img
 
     #predict image from trained data 
     def predictimg(self,img):
@@ -189,12 +194,39 @@ class FaceIdentification:
         self.trainData()
 
         #perform a prediction
-        predicted_img = self.predict(img)
+        name, predicted_img = self.predict(img)
 
-
+        return name
             #display both images
-        cv2.imshow("Face Prediction", predicted_img)
-        cv2.waitKey(5000)
-        cv2.destroyAllWindows()
+        #cv2.imshow("Face Prediction", predicted_img)
+        #cv2.waitKey(5000)
+        #cv2.destroyAllWindows()
+
+    #add name and mkdir a new folder for that person
+    @staticmethod
+    def addPerson(name):
+        
+        try:
+            with open("data/subjects.json", 'r') as f:
+                subjects = f.read()
+                subjects = json.loads(subjects)
+
+            subjects.append(name)
+
+            label = len(subjects) - 1
+
+            os.mkdir("training_data/p"+str(label))
+
+            with open("data/subjects.json", 'w') as f:
+                subjects = json.dumps(subjects, indent=4)
+                f.write(subjects)
+
+            print("New Person is successfully created")
+            return label
+        except:
+            print("New Person can't create Error occur")
+            return False
+
+    
 
 
