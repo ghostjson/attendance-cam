@@ -48,8 +48,10 @@ while(entry != 'e'):
             try:
                 video.stream()
                 prediction = fi.predictimg("img/frame0.jpg")
-
-                attendance.append(prediction)
+                if prediction in attendance:
+                    print(prediction + " already in attendance list")
+                else:
+                    attendance.append(prediction)
 
             finally:
             #end
