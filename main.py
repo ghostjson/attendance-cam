@@ -24,55 +24,62 @@ fi = FaceIdentification()
 attendance = []
 #console
 
-entry = 'd'
-while(entry != 'e'):
-    print("Enter 'a' for add a new person:")
-    print("Enter 's' for start taking attendance:")
-    print("Enter 'e' for end taking attendance:")
+if __name__ == "__main__":
+    
+    entry = 'd'
+    while(entry != 'e'):
+        print("Enter 'a' for add a new person:")
+        print("Enter 's' for start taking attendance:")
+        print("Enter 'e' for end taking attendance:")
 
-    entry = input()
+        entry = input()
 
-    if entry == 'a':
-        while True:
-            print("Enter person's name:")
-            name = input()
-            video.addFace(name)
-            print("Want to add more person?[y/n]")
-            if input() != 'y':
-                break
-        fi.fetch_data()
+        if entry == 'a':
+            while True:
+                print("Enter person's name:")
+                name = input()
+                video.addFace(name)
+                print("Want to add more person?[y/n]")
+                if input() != 'y':
+                    break
+            fi.fetch_data()
+            exit()
+            
+        elif entry == 's':
+            while True:
+                try:
+                    video.stream()
+                    prediction = fi.predictimg("img/frame0.jpg")
 
-        
-    elif entry == 's':
-        while True:
-            try:
-                video.stream()
-                prediction = fi.predictimg("img/frame0.jpg")
-                if prediction in attendance:
-                    print(prediction + " already in attendance list")
-                else:
-                    attendance.append(prediction)
-
-            finally:
-            #end
-                if input() == 'e':
-                    entry = 'e'
-                    try:
-                        os.remove("img/frame0.jpg")
+                    #if prediction fails return to menu
+                    if prediction == False:
                         break
-                    except FileNotFoundError:
-                        raise Exception('frame0 is not found!')
-                        break
-    elif entry == 'e':
-        break
-    else:
-        print("Invalid input try again")
+
+                    if prediction in attendance:
+                        print(prediction + " already in attendance list")
+                    else:
+                        attendance.append(prediction)
+
+                finally:
+                #end
+                    if input() == 'e':
+                        entry = 'e'
+                        try:
+                            os.remove("img/frame0.jpg")
+                            break
+                        except FileNotFoundError:
+                            raise Exception('frame0 is not found!')
+                            break
+        elif entry == 'e':
+            break
+        else:
+            print("Invalid input try again")
 
 
-print("\n\n")
+    print("\n\n")
 
 
-print("Present:")
-for i in attendance:
-    print(i)
+    print("Present:")
+    for i in attendance:
+        print(i)
 

@@ -32,6 +32,8 @@ class FaceIdentification:
         if (len(faces) == 0):
             return None, None
         
+        
+
         #extract the face area assuming there is only one face
         x, y, w, h = faces[0]
         
@@ -177,8 +179,11 @@ class FaceIdentification:
         #predict the image using our face recognizer 
         label = self.face_recognizer.predict(face)
         
-        #get name of respective label returned by face recognizer
-        label_text = self.subjects[label[0]]
+        try:
+            #get name of respective label returned by face recognizer
+            label_text = self.subjects[label[0]]
+        except IndexError:
+            print("Person is not detected, try again")
 
         #draw a rectangle around face detected
         self.draw_rectangle(img, rect)
