@@ -22,10 +22,10 @@ class FaceIdentification:
         #convert the test image to gray scale
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         
-        #load OpenCV face detector
+        #load OpenCV face detector code
         face_cascade = cv2.CascadeClassifier('cascade/lbpcascade_frontalface.xml')
         
-        #detect multiscale images
+        #detect multiscale images code
         faces = face_cascade.detectMultiScale(gray, scaleFactor=1.2, minNeighbors=5);
         
         #if no faces are detected then return None
