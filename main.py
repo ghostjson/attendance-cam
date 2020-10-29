@@ -23,7 +23,7 @@ fi = FaceIdentification()
 
 attendance = []
 #console
-
+#console again
 if __name__ == "__main__":
     
     entry = 'd'
